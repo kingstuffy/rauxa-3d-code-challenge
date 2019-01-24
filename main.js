@@ -25,7 +25,6 @@ function init() {
     gui.add(lightRight.position, 'y', -50, 50);
     gui.add(lightRight.position, 'z', -50, 50);
 
-    // load the environment map
     var path = 'assets/cubemap/';
     var format = '.jpg';
     var fileNames = ['bg', 'bg', 'bg', 'bg', 'bg', 'bg'];
@@ -41,10 +40,10 @@ function init() {
 
     // camera
     var camera = new THREE.PerspectiveCamera(
-        45, // field of view
+        45,
         window.innerWidth / window.innerHeight, // aspect ratio
-        1, // near clipping plane
-        1000 // far clipping plane
+        1,
+        1000
     );
     camera.position.z = 20;
     camera.position.x = 0;
@@ -74,10 +73,11 @@ function init() {
 
         batObject.position.x = 1;
         batObject.position.y = 0;
-        batObject.position.y = 0;
+        batObject.position.z = 0;
         batObject.name = 'bat-object';
         scene.add(batObject);
 
+        /*
         gui.add(batObject.rotation, 'x', -Math.PI, Math.PI * 2);
         gui.add(batObject.rotation, 'y', -Math.PI, Math.PI * 2);
         gui.add(batObject.rotation, 'z', -Math.PI, Math.PI * 2);
@@ -85,99 +85,57 @@ function init() {
         gui.add(batObject.position, 'x', 0, 20);
         gui.add(batObject.position, 'y', 0, 20);
         gui.add(batObject.position, 'z', 0, 20);
+        */
 
-        var tween1 = new TWEEN.Tween({
-            x: 1,
-            y: 0,
-            z: 0,
-            rx: 0,
-            ry: 0,
-            rz: 0
-        })
-            .to({
-                    x: -0.5,
-                    y: -0.3,
-                    z: 1,
-                    rx: 0,
-                    ry: Math.PI,
-                    rz: -1
-                }, 1000
-            )
+        var onTweenUpdate = function () {
+            batObject.position.x = this.x;
+            batObject.position.y = this.y;
+            batObject.position.z = this.z;
+
+            batObject.rotation.x = this.rx;
+            batObject.rotation.y = this.ry;
+            batObject.rotation.z = this.rz;
+        };
+
+        var tweenStep1 = {
+            from: { x: 1, y: 0, z: 0, rx: 0, ry: 0, rz: 0 },
+            to: { x: -0.5, y: -0.3, z: 1, rx: 0, ry: Math.PI, rz: -1 }
+        };
+
+        var tweenStep2 = {
+            from: { x: -0.5, y: -0.3, z: 1, rx: 0, ry: Math.PI, rz: -1 },
+            to: { x: -0.5, y: -0.3, z: 1, rx: 1.6, ry: Math.PI, rz: -1 }
+        };
+
+        var tweenStep3 = {
+            from: { x: -0.5, y: -0.3, z: 1, rx: 1.2, ry: Math.PI, rz: -1 },
+            to: { x: -0.5, y: -0.3, z: 1, rx: 1.8, ry: Math.PI + 0.4, rz: 1 }
+        };
+
+        var tween1 = new TWEEN.Tween(tweenStep1.from)
+            .to(tweenStep1.to, 1000)
             .easing(TWEEN.Easing.Linear.None)
-            .onUpdate(function () {
-                batObject.position.x = this.x;
-                batObject.position.y = this.y;
-                batObject.position.z = this.z;
-
-                batObject.rotation.x = this.rx;
-                batObject.rotation.y = this.ry;
-                batObject.rotation.z = this.rz;
-            })
+            .onUpdate(onTweenUpdate)
             .delay(500);
 
-        var tween2 = new TWEEN.Tween({
-            x: 0,
-            y: 0,
-            z: 1,
-            rx: 0,
-            ry: Math.PI,
-            rz: -1
-        })
-            .to({
-                    x: -2.5,
-                    y: -0.3,
-                    z: 1,
-                    rx: 1.6,
-                    ry: Math.PI,
-                    rz: -1
-                }, 200
-            )
+        var tween2 = new TWEEN.Tween(tweenStep2.from)
+            .to(tweenStep2.to, 200)
             .easing(TWEEN.Easing.Linear.None)
-            .onUpdate(function () {
-                // batObject.position.x = this.x;
-                // batObject.position.y = this.y;
-                batObject.position.z = this.z;
+            .onUpdate(onTweenUpdate);
 
-                batObject.rotation.x = this.rx;
-                batObject.rotation.y = this.ry;
-                batObject.rotation.z = this.rz;
-            });
-
-        var tween3 = new TWEEN.Tween({
-            x: -2.5,
-            y: -0.3,
-            z: 1,
-            rx: 1.2,
-            ry: Math.PI,
-            rz: -1
-        })
-            .to({
-                    x: -2.5,
-                    y: -0.3,
-                    z: 1,
-                    rx: 1.8,
-                    ry: Math.PI + 0.4,
-                    rz: 1
-                }, 200
-            )
+        var tween3 = new TWEEN.Tween(tweenStep3.from)
+            .to(tweenStep3.to, 200)
             .easing(TWEEN.Easing.Linear.None)
-            .onUpdate(function () {
-                // batObject.position.x = this.x;
-                // batObject.position.y = this.y;
-                batObject.position.z = this.z;
-
-                batObject.rotation.x = this.rx;
-                batObject.rotation.y = this.ry;
-                batObject.rotation.z = this.rz;
+            .onUpdate(onTweenUpdate)
+            .onComplete(function () {
             });
 
 
-        tween1.start();
-        tween2.chain(tween3);
         tween1.chain(tween2);
+        tween2.chain(tween3);
+        tween1.start();
     });
 
-    // renderer
     var renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
