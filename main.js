@@ -55,10 +55,10 @@ function init() {
     var loader = new THREE.OBJLoader();
     var textureLoader = new THREE.TextureLoader();
 
-    loader.load('assets/models/bat.obj', function (object) {
+    loader.load('assets/models/bat.obj', function (batObject) {
         var woodTexture = textureLoader.load('assets/models/wood-texture.jpg');
         var faceMaterial = getMaterial('rgb(255, 255, 255)');
-        object.traverse(function (child) {
+        batObject.traverse(function (child) {
             if (child.name) {
                 child.material = faceMaterial;
                 faceMaterial.roughness = 0.875;
@@ -68,13 +68,14 @@ function init() {
             }
         });
 
-        object.scale.x = 0.2;
-        object.scale.y = 0.2;
-        object.scale.z = 0.2;
+        batObject.scale.x = 0.2;
+        batObject.scale.y = 0.2;
+        batObject.scale.z = 0.2;
 
-        object.position.z = 0;
-        object.position.y = -2;
-        scene.add(object);
+        batObject.position.z = 0;
+        batObject.position.y = -2;
+        batObject.name = 'bat-object';
+        scene.add(batObject);
     });
 
     // renderer
