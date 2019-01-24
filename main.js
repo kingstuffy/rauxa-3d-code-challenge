@@ -97,43 +97,57 @@ function init() {
             batObject.rotation.z = this.rz;
         };
 
-        var tweenStep1 = {
-            from: { x: 1, y: 0, z: 0, rx: 0, ry: 0, rz: 0 },
-            to: { x: -0.5, y: -0.3, z: 1, rx: 0, ry: Math.PI, rz: -1 }
-        };
+        function initTweens() {
+            var tweenStep1 = {
+                from: { x: 1, y: 0, z: 0, rx: 0, ry: 0, rz: 0 },
+                to: { x: -0.5, y: -0.3, z: 1, rx: 0, ry: Math.PI, rz: -1 }
+            };
 
-        var tweenStep2 = {
-            from: { x: -0.5, y: -0.3, z: 1, rx: 0, ry: Math.PI, rz: -1 },
-            to: { x: -0.5, y: -0.3, z: 1, rx: 1.6, ry: Math.PI, rz: -1 }
-        };
+            var tweenStep2 = {
+                from: { x: -0.5, y: -0.3, z: 1, rx: 0, ry: Math.PI, rz: -1 },
+                to: { x: -0.5, y: -0.3, z: 1, rx: 1.6, ry: Math.PI, rz: -1 }
+            };
 
-        var tweenStep3 = {
-            from: { x: -0.5, y: -0.3, z: 1, rx: 1.2, ry: Math.PI, rz: -1 },
-            to: { x: -0.5, y: -0.3, z: 1, rx: 1.8, ry: Math.PI + 0.4, rz: 1 }
-        };
+            var tweenStep3 = {
+                from: { x: -0.5, y: -0.3, z: 1, rx: 1.2, ry: Math.PI, rz: -1 },
+                to: { x: -0.5, y: -0.3, z: 1, rx: 1.8, ry: Math.PI + 0.4, rz: 1 }
+            };
 
-        var tween1 = new TWEEN.Tween(tweenStep1.from)
-            .to(tweenStep1.to, 1000)
-            .easing(TWEEN.Easing.Linear.None)
-            .onUpdate(onTweenUpdate)
-            .delay(500);
+            var tweenStep4 = {
+                to: { x: 1, y: 0, z: 0, rx: 0, ry: 0, rz: 0 },
+            };
 
-        var tween2 = new TWEEN.Tween(tweenStep2.from)
-            .to(tweenStep2.to, 200)
-            .easing(TWEEN.Easing.Linear.None)
-            .onUpdate(onTweenUpdate);
+            var tween1 = new TWEEN.Tween(tweenStep1.from)
+                .to(tweenStep1.to, 1000)
+                .easing(TWEEN.Easing.Linear.None)
+                .onUpdate(onTweenUpdate)
+                .delay(450);
 
-        var tween3 = new TWEEN.Tween(tweenStep3.from)
-            .to(tweenStep3.to, 200)
-            .easing(TWEEN.Easing.Linear.None)
-            .onUpdate(onTweenUpdate)
-            .onComplete(function () {
-            });
+            var tween2 = new TWEEN.Tween(tweenStep2.from)
+                .to(tweenStep2.to, 200)
+                .easing(TWEEN.Easing.Linear.None)
+                .onUpdate(onTweenUpdate);
+
+            var tween3 = new TWEEN.Tween(tweenStep3.from)
+                .to(tweenStep3.to, 200)
+                .easing(TWEEN.Easing.Linear.None)
+                .onUpdate(onTweenUpdate);
+
+            var tween4 = new TWEEN.Tween()
+                .to(tweenStep4.to, 10)
+                .easing(TWEEN.Easing.Linear.None)
+                .onUpdate(onTweenUpdate)
+                .delay(2000)
+                .onComplete(initTweens);
 
 
-        tween1.chain(tween2);
-        tween2.chain(tween3);
-        tween1.start();
+            tween1.chain(tween2);
+            tween2.chain(tween3);
+            tween3.chain(tween4);
+            tween1.start();
+        }
+
+        initTweens();
     });
 
     var renderer = new THREE.WebGLRenderer();
