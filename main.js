@@ -72,10 +72,108 @@ function init() {
         batObject.scale.y = 0.2;
         batObject.scale.z = 0.2;
 
-        batObject.position.z = 0;
-        batObject.position.y = -2;
+        batObject.position.x = 0;
+        batObject.position.y = 0;
+        batObject.position.y = 0;
         batObject.name = 'bat-object';
         scene.add(batObject);
+
+        gui.add(batObject.rotation, 'x', -Math.PI, Math.PI * 2);
+        gui.add(batObject.rotation, 'y', -Math.PI, Math.PI * 2);
+        gui.add(batObject.rotation, 'z', -Math.PI, Math.PI * 2);
+
+        gui.add(batObject.position, 'x', 0, 20);
+        gui.add(batObject.position, 'y', 0, 20);
+        gui.add(batObject.position, 'z', 0, 20);
+
+        var tween1 = new TWEEN.Tween({
+            x: 0,
+            y: 0,
+            z: 0,
+            rx: 0,
+            ry: 0,
+            rz: 0
+        })
+            .to({
+                    x: -0.5,
+                    y: -0.3,
+                    z: 1,
+                    rx: 0,
+                    ry: Math.PI,
+                    rz: -1
+                }, 1000
+            )
+            .easing(TWEEN.Easing.Linear.None)
+            .onUpdate(function () {
+                batObject.position.x = this.x;
+                batObject.position.y = this.y;
+                batObject.position.z = this.z;
+
+                batObject.rotation.x = this.rx;
+                batObject.rotation.y = this.ry;
+                batObject.rotation.z = this.rz;
+            })
+            .start();
+
+        var tween2 = new TWEEN.Tween({
+            x: 0,
+            y: 0,
+            z: 1,
+            rx: 0,
+            ry: Math.PI,
+            rz: -1
+        })
+            .to({
+                    x: -2.5,
+                    y: -0.3,
+                    z: 1,
+                    rx: 1.6,
+                    ry: Math.PI,
+                    rz: -1
+                }, 200
+            )
+            .easing(TWEEN.Easing.Linear.None)
+            .onUpdate(function () {
+                // batObject.position.x = this.x;
+                // batObject.position.y = this.y;
+                batObject.position.z = this.z;
+
+                batObject.rotation.x = this.rx;
+                batObject.rotation.y = this.ry;
+                batObject.rotation.z = this.rz;
+            });
+
+        var tween3 = new TWEEN.Tween({
+            x: -2.5,
+            y: -0.3,
+            z: 1,
+            rx: 1.2,
+            ry: Math.PI,
+            rz: -1
+        })
+            .to({
+                    x: -2.5,
+                    y: -0.3,
+                    z: 1,
+                    rx: 1.8,
+                    ry: Math.PI + 0.4,
+                    rz: 1
+                }, 200
+            )
+            .easing(TWEEN.Easing.Linear.None)
+            .onUpdate(function () {
+                // batObject.position.x = this.x;
+                // batObject.position.y = this.y;
+                batObject.position.z = this.z;
+
+                batObject.rotation.x = this.rx;
+                batObject.rotation.y = this.ry;
+                batObject.rotation.z = this.rz;
+            });
+
+
+        tween2.chain(tween3);
+        tween1.chain(tween2);
     });
 
     // renderer
@@ -115,6 +213,7 @@ function getSpotLight(intensity, color) {
 
 function update(renderer, scene, camera, controls) {
     controls.update();
+    TWEEN.update();
     renderer.render(scene, camera);
     requestAnimationFrame(function () {
         update(renderer, scene, camera, controls);
