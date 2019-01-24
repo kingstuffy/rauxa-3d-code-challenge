@@ -1,6 +1,5 @@
 function init() {
     var scene = new THREE.Scene();
-    var gui = new dat.GUI();
 
     // initialize objects
     var lightLeft = getSpotLight(0.85, 'rgb(255, 220, 180)');
@@ -13,17 +12,6 @@ function init() {
     lightRight.position.x = 50;
     lightRight.position.y = 14;
     lightRight.position.z = -6;
-
-    // dat.gui
-    gui.add(lightLeft, 'intensity', 0, 10);
-    gui.add(lightLeft.position, 'x', -50, 50);
-    gui.add(lightLeft.position, 'y', -50, 50);
-    gui.add(lightLeft.position, 'z', -50, 50);
-
-    gui.add(lightRight, 'intensity', 0, 10);
-    gui.add(lightRight.position, 'x', -50, 50);
-    gui.add(lightRight.position, 'y', -50, 50);
-    gui.add(lightRight.position, 'z', -50, 50);
 
     var path = 'assets/cubemap/';
     var format = '.jpg';
@@ -76,16 +64,6 @@ function init() {
         batObject.position.z = 0;
         batObject.name = 'bat-object';
         scene.add(batObject);
-
-        /*
-        gui.add(batObject.rotation, 'x', -Math.PI, Math.PI * 2);
-        gui.add(batObject.rotation, 'y', -Math.PI, Math.PI * 2);
-        gui.add(batObject.rotation, 'z', -Math.PI, Math.PI * 2);
-
-        gui.add(batObject.position, 'x', 0, 20);
-        gui.add(batObject.position, 'y', 0, 20);
-        gui.add(batObject.position, 'z', 0, 20);
-        */
 
         var onTweenUpdate = function () {
             batObject.position.x = this.x;
