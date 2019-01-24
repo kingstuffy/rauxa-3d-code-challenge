@@ -3,12 +3,12 @@ function init() {
     var gui = new dat.GUI();
 
     // initialize objects
-    var lightLeft = getSpotLight(0.4, 'rgb(255, 220, 180)');
+    var lightLeft = getSpotLight(0.85, 'rgb(255, 220, 180)');
     var lightRight = getSpotLight(1.25, 'rgb(255, 220, 180)');
 
-    lightLeft.position.x = 6;
-    lightLeft.position.y = 8;
-    lightLeft.position.z = 12;
+    lightLeft.position.x = 27.8;
+    lightLeft.position.y = -50;
+    lightLeft.position.z = 50;
 
     lightRight.position.x = 50;
     lightRight.position.y = 14;
@@ -72,7 +72,7 @@ function init() {
         batObject.scale.y = 0.2;
         batObject.scale.z = 0.2;
 
-        batObject.position.x = 0;
+        batObject.position.x = 1;
         batObject.position.y = 0;
         batObject.position.y = 0;
         batObject.name = 'bat-object';
@@ -87,7 +87,7 @@ function init() {
         gui.add(batObject.position, 'z', 0, 20);
 
         var tween1 = new TWEEN.Tween({
-            x: 0,
+            x: 1,
             y: 0,
             z: 0,
             rx: 0,
@@ -113,7 +113,7 @@ function init() {
                 batObject.rotation.y = this.ry;
                 batObject.rotation.z = this.rz;
             })
-            .start();
+            .delay(500);
 
         var tween2 = new TWEEN.Tween({
             x: 0,
@@ -172,6 +172,7 @@ function init() {
             });
 
 
+        tween1.start();
         tween2.chain(tween3);
         tween1.chain(tween2);
     });
